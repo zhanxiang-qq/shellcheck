@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
-# quickrun runs ShellCheck in an interpreted mode.
-# This allows testing changes without recompiling.
+#Copyright (c) Huawei Technologies Co., Ltd. 2021. All rights reserved.
+function hostguard_install() {
+    #判断agent是否安装，已安装则退出
+    service hostguard status > /dev/null 2>&1
+    if [ $? -eq 0 ];then
+        exit 0
+    else
+      eval  "${HSS_CMD}"
+    fi
+}
+HSS_CMD=`echo ${@:1}`
+if [ -z "$HSS_CMD" ];then
+     exit 0
+else
+    hostguard_install
+fi
 
-runghc -isrc -idist/build/autogen shellcheck.hs "$@"
+
